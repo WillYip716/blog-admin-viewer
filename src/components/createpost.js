@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 
 
-class Post extends React.Component{
+class CreatePost extends React.Component{
 
     constructor(props){
         super(props);
@@ -35,9 +35,11 @@ class Post extends React.Component{
                   </div>
                   
             }
+            
+                
             </div>
         )
     }
     
 }
-export default Post;
+export default CreatePost;
