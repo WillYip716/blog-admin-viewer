@@ -26,9 +26,9 @@ class Login extends React.Component {
 
         axios.post('http://10.0.2.15:4000/login', { username, password})
             .then((result) => {
-                if(result.token){
-                    localStorage.setItem('user', result.token);
-                    //this.props.history.push('/');
+                if(result.data.token){
+                    localStorage.setItem('user', result.data.token);
+                    this.props.history.push('/');
                 }
         });
     }
