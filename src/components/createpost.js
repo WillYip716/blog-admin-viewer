@@ -7,38 +7,69 @@ class CreatePost extends React.Component{
     constructor(props){
         super(props);
         this.state ={
-            loading: true,
-            posts: []
+            title: "",
+            article: ""
         };
     }
 
-    componentDidMount() {
-        axios.get('http://10.0.2.15:4000/posts/'+this.props.match.params.id)
-          .then(res => {
-            const posts = res.data;
-            this.setState((state) => ({
-                loading: false,
-                posts: posts
-            }));  
-          })
+    onChange = (e) => {
+        /*
+            Because we named the inputs to match their
+            corresponding values in state, it's
+            super easy to update the state
+        */
+        this.setState({ [e.target.name]: e.target.value });
     }
 
-    render(){
-        return(
-            <div>
-            {this.state.loading        
-                ? <h1>Post Loading</h1>
-                : <div>
-                    <h1>{this.state.posts.title}</h1>
-                    <p>{this.state.posts.article}</p>
-                    <p>{this.state.posts.timestamp}</p> 
-                  </div>
-                  
+    onSubmit = (e) => {
+        e.preventDefault();
+        // get our form data out of state
+        const { title, article } = this.state;
+        const header = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer '+localStorage.getItem('blogusertoken')
             }
-            
-                
-            </div>
-        )
+        };
+
+        axios.post('http://10.0.2.15:4000/posts/create', { title, content:article,id:localStorage.getItem('bloguserid')},header)
+            .then((result) => {
+                if(result.data){
+                    this.props.history.push('/post/'+result.data._id);
+                }
+        });
+    }
+
+    render() {
+        const { title, article } = this.state;
+        return (
+            (this.state.loading?(
+                <p>Page is loading</p>
+            ):(
+                <section>
+                    <p>Create a post</p>
+                    <form onSubmit={this.onSubmit}>
+                        <label>Title:</label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={this.onChange}
+                        />
+                        <label>Article:</label>
+                        <textarea 
+                            className="article_input"
+                            type="text"
+                            name="article"
+                            value={article}
+                            onChange={this.onChange}
+                        />                 
+                        <button type="submit">Submit</button>
+                    </form>
+                </section>
+            )
+                   
+        ));
     }
     
 }

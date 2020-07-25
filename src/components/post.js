@@ -10,7 +10,8 @@ class Post extends React.Component{
             loading: true,
             title: "",
             article: "",
-            timestamp: ""
+            timestamp: "",
+            published: ""
         };
     }
 
@@ -22,7 +23,8 @@ class Post extends React.Component{
                 loading: false,
                 title: posts.title,
                 article: posts.article,
-                timestamp: posts.timestamp
+                timestamp: posts.timestamp,
+                published: posts.published
             }));  
           })
     }
@@ -40,13 +42,57 @@ class Post extends React.Component{
         e.preventDefault();
         // get our form data out of state
         const { title, article } = this.state;
+        const header = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer '+localStorage.getItem('blogusertoken')
+            }
+        };
 
-        axios.put('http://10.0.2.15:4000/posts/'+this.props.match.params.id, { title, article})
+        axios.put('http://10.0.2.15:4000/posts/'+this.props.match.params.id, { title, content:article},header)
             .then((result) => {
-                if(result.data.token){
-                    localStorage.setItem('user', result.data.token);
-                    this.props.history.push('/');
+                if(result.data){
+                    this.setState((state) => ({
+                        timestamp: result.data.timestamp,
+                    }));
+                   
                 }
+        });
+    }
+
+    publishtoggle = (e) => {
+        e.preventDefault();
+        // get our form data out of state
+        const header = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer '+localStorage.getItem('blogusertoken')
+            }
+        };
+
+        axios.put('http://10.0.2.15:4000/posts/'+this.props.match.params.id+'/publish', {},header)
+            .then((result) => {
+                if(result.data){
+                    this.setState((state) => ({
+                        published: result.data.published,
+                    }));             
+                }
+        });
+    }
+
+    deletebutton = (e) => {
+        e.preventDefault();
+        // get our form data out of state
+        const header = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer '+localStorage.getItem('blogusertoken')
+            }
+        };
+
+        axios.delete('http://10.0.2.15:4000/posts/'+this.props.match.params.id+'/delete',header)
+            .then((result) => {
+                this.props.history.push('/');
         });
     }
 
@@ -57,6 +103,9 @@ class Post extends React.Component{
                 <p>Page is loading</p>
             ):(
                 <section>
+                    <button onClick={this.publishtoggle}>{this.state.published?'Unpublish':'Publish'}</button>
+                    <button onClick={this.deletebutton}>DELETE</button>
+                    <p>Updated {this.state.timestamp}</p>
                     <form onSubmit={this.onSubmit}>
                         <label>Title:</label>
                         <input
@@ -66,7 +115,8 @@ class Post extends React.Component{
                             onChange={this.onChange}
                         />
                         <label>Article:</label>
-                        <input
+                        <textarea 
+                            className="article_input"
                             type="text"
                             name="article"
                             value={article}
@@ -74,7 +124,6 @@ class Post extends React.Component{
                         />                 
                         <button type="submit">Submit</button>
                     </form>
-                    <p>{this.state.timestamp}</p>
                 </section>
             )
                    

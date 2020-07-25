@@ -3,8 +3,7 @@ import {Link} from 'react-router-dom'
 
 function Navbar(){
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-    const user = localStorage.getItem('user');
-    console.log(user);
+    const user = localStorage.getItem('blogusertoken');
     return(
         <ul>
                 <Link to='/'>Home</Link>

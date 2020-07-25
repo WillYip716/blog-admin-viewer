@@ -1,0 +1,11 @@
+.article_input{
+    width: 100%;
+}
+
+textarea{
+    display: block;
+}
+
+input{
+    display: block;
+}
