@@ -12,7 +12,6 @@ function App() {
             <Navbar/>
             <Route path="/" exact component={Home} />
             <Route path="/post/:id" exact component={Post} />
-            <Route path="/login" exact component={Login} />
             <Route path="/createpost" exact component={CreatePost} />
         </div>
             
