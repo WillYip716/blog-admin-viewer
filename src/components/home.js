@@ -13,7 +13,7 @@ class Home extends React.Component{
     }
 
     componentDidMount() {
-        axios.get('http://10.0.2.15:4000/posts')
+        axios.get('https://gentle-reaches-06177.herokuapp.com/posts')
           .then(res => {
             const posts = res.data;
             this.setState((state) => ({

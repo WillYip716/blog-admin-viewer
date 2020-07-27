@@ -32,7 +32,7 @@ class CreatePost extends React.Component{
             }
         };
 
-        axios.post('http://10.0.2.15:4000/posts/create', { title, content:article,id:localStorage.getItem('bloguserid')},header)
+        axios.post('https://gentle-reaches-06177.herokuapp.com/posts/create', { title, content:article,id:localStorage.getItem('bloguserid')},header)
             .then((result) => {
                 if(result.data){
                     this.props.history.push('/post/'+result.data._id);

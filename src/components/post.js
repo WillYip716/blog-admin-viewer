@@ -16,7 +16,7 @@ class Post extends React.Component{
     }
 
     componentDidMount() {
-        axios.get('http://10.0.2.15:4000/posts/'+this.props.match.params.id)
+        axios.get('https://gentle-reaches-06177.herokuapp.com/posts/'+this.props.match.params.id)
           .then(res => {
             const posts = res.data;
             this.setState((state) => ({
@@ -49,7 +49,7 @@ class Post extends React.Component{
             }
         };
 
-        axios.put('http://10.0.2.15:4000/posts/'+this.props.match.params.id, { title, content:article},header)
+        axios.put('https://gentle-reaches-06177.herokuapp.com/posts/'+this.props.match.params.id, { title, content:article},header)
             .then((result) => {
                 if(result.data){
                     this.setState((state) => ({
@@ -70,7 +70,7 @@ class Post extends React.Component{
             }
         };
 
-        axios.put('http://10.0.2.15:4000/posts/'+this.props.match.params.id+'/publish', {},header)
+        axios.put('https://gentle-reaches-06177.herokuapp.com/posts/'+this.props.match.params.id+'/publish', {},header)
             .then((result) => {
                 if(result.data){
                     this.setState((state) => ({
@@ -90,7 +90,7 @@ class Post extends React.Component{
             }
         };
 
-        axios.delete('http://10.0.2.15:4000/posts/'+this.props.match.params.id+'/delete',header)
+        axios.delete('https://gentle-reaches-06177.herokuapp.com/posts/'+this.props.match.params.id+'/delete',header)
             .then((result) => {
                 this.props.history.push('/');
         });

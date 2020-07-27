@@ -15,12 +15,18 @@ function Navbar(){
         setlogin("true");
     }
 
+    const logout = (e) => {
+        e.preventDefault();
+        setlogin("false");
+        setUser("");
+        localStorage.removeItem("bloguserid");
+        localStorage.removeItem("blogusertoken");
+    }
+
     const onSubmit=(e)=>{
         e.preventDefault();
-        console.log(username);
-        console.log(password);
 
-        axios.post('http://10.0.2.15:4000/login', { username, password})
+        axios.post('https://gentle-reaches-06177.herokuapp.com/login', { username, password})
             .then((result) => {
                 if(result.data.token){
                     localStorage.setItem('blogusertoken', result.data.token);
@@ -34,9 +40,9 @@ function Navbar(){
     }
 
     function rendercontent(){
-        console.log(login);
          if(user&&user!=="null"){
-             return <li><Link to='/createpost'>Create Post</Link></li>;
+             return <div><Link to='/createpost'>Create Post</Link><br></br>
+             <a href="/" onClick={logout}>Log Out</a></div>;
          }
          else if(login!=="true"){
              return <li><a href="/" onClick={loginmode}>Log in</a></li>;
